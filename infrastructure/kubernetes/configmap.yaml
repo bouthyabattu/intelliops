@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: intelliops-config
+  namespace: intelliops
+data:
+  SPRING_PROFILES_ACTIVE: "kubernetes"
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "intelliops"
+  REDIS_HOST: "redis-service"
+  REDIS_PORT: "6379"
+  KAFKA_BROKERS: "kafka-service:9092"
+  AI_SERVICE_URL: "http://ai-service:8000"
+  CORE_SERVICE_URL: "http://core-service:8080"
+  REALTIME_SERVICE_URL: "http://realtime-service:4000"

@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.96.0
+    container_name: intelliops-otel-collector
+    restart: unless-stopped
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./infrastructure/monitoring/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP HTTP receiver
+      - "8889:8889" # Prometheus metrics exporter
+    networks:
+      - intelliops-net
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: intelliops-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    volumes:
+      - ./infrastructure/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - intelliops-net
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: intelliops-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./infrastructure/monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+      - ./infrastructure/monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - intelliops-net
+
+networks:
+  intelliops-net:
+    external: true

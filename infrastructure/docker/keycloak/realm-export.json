@@ -1,0 +1,92 @@
+{
+  "realm": "intelliops",
+  "enabled": true,
+  "displayName": "IntelliOps Enterprise",
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "roles": {
+    "realm": [
+      {
+        "name": "ADMIN",
+        "description": "Enterprise administrator with full cross-tenant control"
+      },
+      {
+        "name": "MANAGER",
+        "description": "Organization and project manager"
+      },
+      {
+        "name": "ENGINEER",
+        "description": "Software engineer with task and tool execution rights"
+      },
+      {
+        "name": "VIEWER",
+        "description": "Read-only access to projects and analytics"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "intelliops-web",
+      "name": "IntelliOps Next.js Frontend",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "rootUrl": "http://localhost:3000",
+      "baseUrl": "http://localhost:3000",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://localhost:3000/api/auth/callback/keycloak"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "+"
+      ]
+    },
+    {
+      "clientId": "intelliops-core",
+      "name": "IntelliOps Spring Boot Core Service",
+      "enabled": true,
+      "bearerOnly": true
+    }
+  ],
+  "users": [
+    {
+      "username": "admin@intelliops.ai",
+      "email": "admin@intelliops.ai",
+      "firstName": "Alex",
+      "lastName": "Vance",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ADMIN", "MANAGER"]
+    },
+    {
+      "username": "engineer@intelliops.ai",
+      "email": "engineer@intelliops.ai",
+      "firstName": "Sarah",
+      "lastName": "Connor",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "engineer",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ENGINEER"]
+    }
+  ]
+}
